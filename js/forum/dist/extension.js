@@ -1,30 +1,28 @@
-System.register('flagrow/image-upload/components/UploadButton', ['flarum/Component', 'flarum/helpers/icon', 'flarum/components/LoadingIndicator'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('flagrow/image-upload/components/UploadButton', ['flarum/Component', 'flarum/helpers/icon', 'flarum/components/LoadingIndicator'], function (_export, _context) {
+    "use strict";
 
     var Component, icon, LoadingIndicator, UploadButton;
     return {
         setters: [function (_flarumComponent) {
-            Component = _flarumComponent['default'];
+            Component = _flarumComponent.default;
         }, function (_flarumHelpersIcon) {
-            icon = _flarumHelpersIcon['default'];
+            icon = _flarumHelpersIcon.default;
         }, function (_flarumComponentsLoadingIndicator) {
-            LoadingIndicator = _flarumComponentsLoadingIndicator['default'];
+            LoadingIndicator = _flarumComponentsLoadingIndicator.default;
         }],
         execute: function () {
-            UploadButton = (function (_Component) {
+            UploadButton = function (_Component) {
                 babelHelpers.inherits(UploadButton, _Component);
 
                 function UploadButton() {
                     babelHelpers.classCallCheck(this, UploadButton);
-                    babelHelpers.get(Object.getPrototypeOf(UploadButton.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(UploadButton).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(UploadButton, [{
                     key: 'init',
-
-                    /**
-                     * Load the configured remote uploader service.
-                     */
                     value: function init() {
                         // the service type handling uploads
                         this.textAreaObj = null;
@@ -32,12 +30,6 @@ System.register('flagrow/image-upload/components/UploadButton', ['flarum/Compone
                         // initial state of the button
                         this.loading = false;
                     }
-
-                    /**
-                     * Show the actual Upload Button.
-                     *
-                     * @returns {*}
-                     */
                 }, {
                     key: 'view',
                     value: function view() {
@@ -48,20 +40,18 @@ System.register('flagrow/image-upload/components/UploadButton', ['flarum/Compone
                             onchange: this.process.bind(this)
                         })])]);
                     }
-
-                    /**
-                     * Process the upload event.
-                     */
                 }, {
                     key: 'process',
                     value: function process(e) {
-
+                        // get the file from the input field
                         var data = new FormData();
                         data.append('image', $(e.target)[0].files[0]);
 
+                        // set the button in the loading state (and redraw the element!)
                         this.loading = true;
                         m.redraw();
 
+                        // send a POST request to the api
                         app.request({
                             method: 'POST',
                             url: app.forum.attribute('apiUrl') + '/image/upload',
@@ -71,27 +61,22 @@ System.register('flagrow/image-upload/components/UploadButton', ['flarum/Compone
                             data: data
                         }).then(this.success.bind(this), this.failure.bind(this));
                     }
-
-                    /**
-                     * Handles errors.
-                     *
-                     * @param message
-                     */
                 }, {
                     key: 'failure',
                     value: function failure(message) {}
                     // todo show popup
 
+
                     /**
-                     * Appends the link to the body of the composer.
+                     * Appends the image's link to the body of the composer.
                      *
-                     * @param link
+                     * @param image
                      */
 
                 }, {
                     key: 'success',
                     value: function success(image) {
-                        var _this = this;
+                        var _this2 = this;
 
                         var link = image.data.attributes.url;
 
@@ -110,28 +95,30 @@ System.register('flagrow/image-upload/components/UploadButton', ['flarum/Compone
                         // reset the button for a new upload
                         setTimeout(function () {
                             document.getElementById("flagrow-image-upload-form").reset();
-                            _this.loading = false;
+                            _this2.loading = false;
                         }, 1000);
                     }
                 }]);
                 return UploadButton;
-            })(Component);
+            }(Component);
 
             _export('default', UploadButton);
         }
     };
 });;
-System.register('flagrow/image-upload/main', ['flarum/extend', 'flarum/components/TextEditor', 'flagrow/image-upload/components/UploadButton'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('flagrow/image-upload/main', ['flarum/extend', 'flarum/components/TextEditor', 'flagrow/image-upload/components/UploadButton'], function (_export, _context) {
+    "use strict";
 
     var extend, TextEditor, UploadButton;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumComponentsTextEditor) {
-            TextEditor = _flarumComponentsTextEditor['default'];
+            TextEditor = _flarumComponentsTextEditor.default;
         }, function (_flagrowImageUploadComponentsUploadButton) {
-            UploadButton = _flagrowImageUploadComponentsUploadButton['default'];
+            UploadButton = _flagrowImageUploadComponentsUploadButton.default;
         }],
         execute: function () {
 
@@ -150,12 +137,13 @@ System.register('flagrow/image-upload/main', ['flarum/extend', 'flarum/component
                     items.add('flagrow-image-upload', uploadButton, 0);
 
                     // animate the button on hover: shows the label
-                    $(".Button-label", ".item-flagrow-image-upload > div").hide();
-                    $(".item-flagrow-image-upload > div").hover(function () {
-                        $('.Button-label', this).show();$(this).removeClass('Button--icon');
-                    }, function () {
-                        $('.Button-label', this).hide();$(this).addClass('Button--icon');
-                    });
+                    /*
+                    $('.Button-label', '.item-flagrow-image-upload > div').hide();
+                    $('.item-flagrow-image-upload > div').hover(
+                            function(){ $('.Button-label', this).show(); $(this).removeClass('Button--icon')},
+                            function(){ $('.Button-label', this).hide(); $(this).addClass('Button--icon')}
+                    );
+                    */
                 });
             });
         }

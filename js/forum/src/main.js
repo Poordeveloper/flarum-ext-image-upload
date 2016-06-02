@@ -19,10 +19,12 @@ app.initializers.add('flagrow-image-upload', app => {
         items.add('flagrow-image-upload', uploadButton, 0);
 
         // animate the button on hover: shows the label
+        /*
         $('.Button-label', '.item-flagrow-image-upload > div').hide();
         $('.item-flagrow-image-upload > div').hover(
                 function(){ $('.Button-label', this).show(); $(this).removeClass('Button--icon')},
                 function(){ $('.Button-label', this).hide(); $(this).addClass('Button--icon')}
         );
+        */
     });
 });
